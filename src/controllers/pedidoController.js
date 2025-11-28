@@ -3,14 +3,18 @@ const { pedidoModel } = require('../models/pedidoModel');
 const pedidoController = {
     criarPedido: async (req, res) => {
         try {
-            const { IdCliente } = Number(req.param.IdCliente);
-            const { tipoEntrega, distancia, pesoCarga, valorKM, valorKG } = req.body;
+            console.log('oiiiii');
+            const { idCliente } = req.query.idCliente;
+            
+            console.log(idCliente);
+            // const { idTipoEntrega } = Number(req.param.idTipoEntrega);
+            const {  idTipoEntrega,distancia, pesoCarga, valorKM, valorKG } = req.body;
 
-            if (!IdCliente, !tipoEntrega, !distancia, !pesoCarga, !valorKM, valorKG) {
+            if (!idCliente, !idTipoEntrega, !distancia, !pesoCarga, !valorKM, !valorKG) {
                 return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
             }
 
-            const resultado = await pedidoModel.insertPedido(tipoEntrega, distancia, pesoCarga, valorKM, valorKG, IdCliente);
+            const resultado = await pedidoModel.insertPedido(distancia, pesoCarga, valorKM, valorKG, idCliente,idTipoEntrega);
 
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
 
