@@ -1,8 +1,8 @@
-const { poll } = require('../config/db');
+const { pool } = require('../config/db');
 
 const pedidoModel = {
     insertPedido: async ( pDistancia, pPesoCarga, pValorKM, pValorKG, pIdCliente,pIdTipoEntrega) => {
-        const connection = await poll.getConnection();
+        const connection = await pool.getConnection();
         try {
             await connection.beginTransaction();
             const sqlPedido = 'INSERT INTO pedidos (distancia,peso_carga,valor_km,valor_kg,id_cliente,id_tipo_entrega) VALUES (?,?,?,?,?,?)';

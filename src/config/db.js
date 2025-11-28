@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-const poll = mysql.createPool({
+const pool = mysql.createPool({
     host: '10.87.169.15',
     user: 'gabriel',
     password: 'MySQL1234',
@@ -13,7 +13,7 @@ const poll = mysql.createPool({
 
 (async () => {
     try {
-        const connection = await poll.getConnection();
+        const connection = await pool.getConnection();
         console.log('Conectando ao MySQL');
         connection.release;
     } catch (error) {
@@ -21,4 +21,4 @@ const poll = mysql.createPool({
     }
 })();
 
-module.exports = { poll };
+module.exports = { pool };
