@@ -39,24 +39,20 @@ const pedidoController = {
 
             const { distancia, pesoCarga, valorKM, valorKG } = req.body;
 
-            const CepDistance = require("cep-distance");
+            const cepDistance = require("cep-distance");
 
-            const cepCliente = "";
+            const cepCliente = "01001000";
             const cep2 = "01310200";
 
-            async function Start() {
-
-                const distanceInKilometers = await CepDistance(cep1, cep2, "KM");
+                const distanceInKilometers = await cepDistance(cepCliente, cep2, "KM");
                 console.log(`${distanceInKilometers} KiloMetros`); // 2.66 KiloMetros
-            }
-
-            Start();
+        
 
             if (!idCliente || !idTipoEntrega || !distancia || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idTipoEntrega != 'number') {
                 return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
             }
 
-            const resultado = await pedidoModel.insertPedido(distancia, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
+            const resultado = await pedidoModel.insertPedido(distanceInKilometers, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
 
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
 
