@@ -56,19 +56,7 @@ const clienteModel = {
         const [rows] = await pool.query(sql, values);
         return rows;
     },
-    updateTelefone: async (pIdCliente, pTelefone) => {
-        const sql = 'UPDATE telefones SET numero = ? WHERE id_cliente = ?';
-        const values = [pTelefone, pIdCliente];
-        const [rows] = await pool.query(sql, values);
-        return rows;
-    },
 
-    updateEndereco: async (pIdCliente, pLogradouro, pNumero, pBairro, pCidade, pEstado, pCep, pComplemento) => {
-        const sql = 'UPDATE enderecos SET logradouro = ?, numero = ?, bairro = ?, cidade = ?, estado = ?, cep = ?, complemento = ? WHERE id_cliente = ?;';
-        const values = [pLogradouro, pNumero, pBairro, pCidade, pEstado, pCep, pComplemento, pIdCliente];
-        const [rows] = await pool.query(sql, values);
-        return rows;
-    }
 };
 
 module.exports = { clienteModel };

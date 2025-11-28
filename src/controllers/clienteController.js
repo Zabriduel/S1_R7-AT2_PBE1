@@ -124,58 +124,7 @@ const clienteController = {
         }
     },
 
-    atualizaTelefone: async (req, res) => {
-        try {
-            const { idCliente } = req.params;
-            const { telefone } = req.body;
-
-            const clienteExistente = await clienteModel.selectById(idCliente);
-            if (clienteExistente.length === 0)
-                return res.status(404).json({ message: "Cliente não encontrado" });
-
-            if (!telefone)
-                return res.status(400).json({ message: "Telefone obrigatório!" });
-
-            const resultado = await clienteModel.updateTelefone(idCliente, telefone);
-
-            return res.status(200).json({
-                message: "Telefone atualizado com sucesso!",
-                resultado
-            });
-
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: "Erro no servidor", error: error.message });
-        }
-    },
-
-    atualizaEndereco: async (req, res) => {
-        try {
-            const { idCliente } = req.params;
-
-            const { rua, numero, bairro, cidade, estado, cep } = req.body;
-
-            const clienteExistente = await clienteModel.selectById(idCliente);
-            if (clienteExistente.length === 0)
-                return res.status(404).json({ message: "Cliente não encontrado" });
-
-            if (!rua || !numero || !bairro || !cidade || !estado || !cep) {
-                return res.status(400).json({ message: "Preencha todos os campos de endereço!" });
-            }
-
-            const resultado = await clienteModel.updateEndereco(
-                idCliente, rua, numero, bairro, cidade, estado, cep
-            );
-
-            return res.status(200).json({message: "Endereço atualizado com sucesso!", resultado
-            });
-
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: "Erro no servidor", error: error.message });
-        }
-    },
-
+    // 
 }
 
 
