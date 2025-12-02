@@ -5,5 +5,6 @@ const { pedidoController } = require('../controllers/pedidoController');
 pedidoRoutes.post('/pedidos/:idCliente/:idTipoEntrega', pedidoController.criarPedido);
 pedidoRoutes.get('/pedidos', pedidoController.consultaPedidos);
 pedidoRoutes.get('/pedidos/:idPedido', pedidoController.consultarPedidoPorId);
+pedidoRoutes.patch('/pedidos/:idPedido', pedidoController.alterarPedido);
 
 module.exports = { pedidoRoutes };
