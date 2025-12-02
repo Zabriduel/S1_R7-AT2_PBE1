@@ -16,6 +16,7 @@
   "dependencies": {
     "cep-distance": "^1.0.2",
     "express": "^5.1.0",
+    "geolib": "^3.3.4",
     "mysql2": "^3.15.3"
   }
 }
