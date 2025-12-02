@@ -44,7 +44,7 @@ const pedidoController = {
             const { pesoCarga, valorKM, valorKG } = req.body;
             // const dadosCliente = await clienteModel.selectById(idCliente);
 
-            const dadosCep = await (await fetch(`https://cep.awesomeapi.com.br/json/13199174`)).json();
+            const dadosCep = await (await fetch(`https://cep.awesomeapi.com.br/json/47403040`)).json();
             if (dadosCep.code == 'ivalid') {
                 return res.status(400).json({ message: dadosCep.message });
             }
