@@ -2,6 +2,29 @@ const { pedidoModel } = require('../models/pedidoModel');
 const { clienteModel } = require('../models/clienteModel');
 const geolib = require('geolib');
 
+const distanciaCeps = async (pIdEndereco) => {
+    try {
+        const dadosCliente = await clienteModel.selectEnderecoById(pIdEndereco);
+
+        const dadosCep = await (await fetch(`https://cep.awesomeapi.com.br/json/${dadosCliente[0].cep}`)).json();
+        if (dadosCep.code == 'ivalid') {
+            return res.status(400).json({ message: dadosCep.message });
+        }
+
+        const saidaGalpao = { latitude: -22.81937, longitude: -47.27421 };
+        const casaCliente = { latitude: dadosCep.lat, longitude: dadosCep.lng };
+
+        const distanciaMetros = geolib.getDistance(saidaGalpao, casaCliente);
+        const distanciaKm = (distanciaMetros / 1000).toFixed(2);
+
+        return distanciaKm;
+
+    } catch (error) {
+        console.error("Erro ViaCEP:", error);
+        return { erro: true, message: "Erro ao consultar o ViaCEP." };
+    }
+};
+
 const pedidoController = {
     consultarPedidoPorId: async (req, res) => {
         try {
@@ -38,23 +61,13 @@ const pedidoController = {
 
     criarPedido: async (req, res) => {
         try {
+            const idEndereco = Number(req.params.idEndereco);
             const idCliente = Number(req.params.idCliente);
             const idTipoEntrega = Number(req.params.idTipoEntrega);
 
             const { pesoCarga, valorKM, valorKG } = req.body;
-            // const dadosCliente = await clienteModel.selectById(idCliente);
 
-            const dadosCep = await (await fetch(`https://cep.awesomeapi.com.br/json/47403040`)).json();
-            if (dadosCep.code == 'ivalid') {
-                return res.status(400).json({ message: dadosCep.message });
-            }
-
-            const saidaGalpao = { latitude: -22.81937, longitude: -47.27421 };
-            const casaCliente = { latitude: dadosCep.lat, longitude: dadosCep.lng };
-
-            const distanciaMetros = geolib.getDistance(saidaGalpao, casaCliente);
-            const distanciaKm = (distanciaMetros / 1000).toFixed(2);
-
+            const distanciaKm = await distanciaCeps(idEndereco);
 
             if (!idCliente || !idTipoEntrega || !distanciaKm || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idTipoEntrega != 'number') {
                 return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
@@ -72,21 +85,19 @@ const pedidoController = {
     alterarPedido: async (req, res) => {
         try {
             const idPedido = Number(req.params.idPedido);
-            const { idTipoEntrega, distanciaKm, pesoCarga, valorKM, valorKG } = req.body;
-            console.log(distanciaKm);
+            const idEndereco = Number(req.params.idEndereco);
+            const { idTipoEntrega, pesoCarga, valorKM, valorKG } = req.body;
 
-            // if (!idPedido || !idTipoEntrega || !distanciaKm || !pesoCarga || !valorKM || !valorKG || typeof idTipoEntrega != 'number' || typeof idPedido != 'number') {
-            //     return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
-            // }
-            console.log(idPedido)
+            const distanciaKm = await distanciaCeps(idEndereco);
+
             const pedidoAtual = await pedidoModel.selectById(idPedido);
             if (pedidoAtual.length === 0) {
                 return res.status(200).json({ message: 'Pedido não localizado no sistema' });
             }
-            console.log(pedidoAtual)
 
             const novaDistancia = distanciaKm ?? pedidoAtual[0].distancia;
             console.log(distanciaKm);
+
 
             const novoPeso = pesoCarga ?? pedidoAtual[0].peso_carga;
             const novoValorKm = valorKM ?? pedidoAtual[0].valor_km;
@@ -95,11 +106,36 @@ const pedidoController = {
 
             console.log(novoTipoEntrega)
             const resultado = await pedidoModel.updatePedido(idPedido, novaDistancia, novoPeso, novoValorKm, novoValorKg, novoTipoEntrega);
-            res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
+            res.status(201).json({ message: 'Pedido atualizado com sucesso.', data: resultado });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Ocoreu um erro no servidor', errorMessage: error.message });
         }
+    },
+    alterarStatusPedido: async (req, res) => {
+        try {
+            const idPedido = Number(req.params.idPedido);
+            const idStatusEntrega = Number(req.params.idStatusEntrega);
+
+            const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega,idPedido);
+            res.status(201).json({message:'Status do pedido atualizado com sucesse.', data: resultado});
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({message: 'Ocorreu um erro no servidor', errorMessage: error.message});
+        }
+    },
+    deletarPedido: async (req, res) => {
+        try {
+            const idPedido = Number(req.params.idPedido);
+
+            const resultado = await pedidoModel.deletePedido(idPedido);
+
+            res.status(201).json({ message: 'Registro deletado com sucesso.', data: resultado })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message });
+        }
+
     }
 }
 
