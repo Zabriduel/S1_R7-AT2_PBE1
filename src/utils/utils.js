@@ -23,7 +23,36 @@ const funcoesUteis = {
             console.error("Erro ViaCEP:", error);
             return { erro: true, message: "Erro ao consultar o ViaCEP." };
         }
+    },
+
+    DadosCep: async (cep) => {
+        try {
+            if (!cep || String(cep).length !== 8 || isNaN(Number(cep))) {
+                return { erro: true, message: "CEP inválido ou não informado." };
+            }
+            console.log(cep);
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const json = await response.json();
+
+            if (json.erro) {
+                return { erro: true, message: "CEP não encontrado no ViaCEP." };
+            }
+
+            return {
+                erro: false,
+                logradouro: json.logradouro,
+                bairro: json.bairro,
+                cidade: json.localidade,
+                estado: json.uf
+            };
+
+        } catch (error) {
+            console.error("Erro ViaCEP:", error);
+            return { erro: true, message: "Erro ao consultar o ViaCEP." };
+        }
+
     }
+
 }
 
 module.exports = { funcoesUteis }
