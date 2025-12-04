@@ -39,11 +39,16 @@ const clienteModel = {
     selectEnderecoById: async (idEndereco) => {
         const sql = 'SELECT * FROM enderecos WHERE id_endereco = ?;';
         const values = [idEndereco];
-        console.log(idEndereco);
         const [rows] = await pool.query(sql, values);
         return rows;
     },
 
+    selectPedidosByCliente: async (idCliente) => {
+        const sql = 'SELECT * FROM pedidos WHERE id_cliente = ?;';
+        const values = [idCliente];
+        const [rows] = await pool.query(sql, values);
+        return rows;
+    },
 
     insertCliente: async (pNome, pCpf, pEmail, pData_nasc, pIdade, pStatus = "ativo") => {
         const sql = 'INSERT INTO clientes (nome_cliente, cpf, email, data_nasc, idade, status_cliente) VALUES (?, ?, ?, ?, ?, ?);';
@@ -53,7 +58,7 @@ const clienteModel = {
     },
 
     insertTelefone: async (pIdCliente, pNumeroTelefone) => {
-        const sql = "INSERT INTO telefones (id_cliente, numero_telefone) VALUES (?, ?)";
+        const sql = 'INSERT INTO telefones (id_cliente, numero_telefone) VALUES (?, ?)';
         const values = [pIdCliente, pNumeroTelefone];
         const [rows] = await pool.query(sql, values);
         return rows;
@@ -102,8 +107,41 @@ const clienteModel = {
         return rows;
     },
 
+    updateStatus: async (idCliente, novoStatus) => {
+        const sql = 'UPDATE clientes SET status_cliente = ? WHERE id_cliente = ?;';
+        const values = [novoStatus, idCliente];
+        const [result] = await pool.query(sql, values);
+        return result;
+    },
+
+    deleteTelefone: async (idTelefone) => {
+        const sql = 'DELETE FROM telefones WHERE id_telefone = ?;';
+        const values = [idTelefone];
+        const [rows] = await pool.query(sql, values);
+        return rows;
+    },
+
+    contaTelefones: async (idCliente) => {
+        const sql = 'SELECT COUNT(*) AS total FROM telefones WHERE id_cliente = ?;';
+        const values = [idCliente]
+        const [result] = await pool.query(sql, values);
+        return result[0].total;
+    },
 
 
-};
+    deleteEndereco: async (idEndereco) => {
+        const sql = 'DELETE FROM enderecos WHERE id_endereco = ?;';
+        const values = [idEndereco];
+        const [rows] = await pool.query(sql, values);
+        return rows;
+    },
+
+    deleteCliente: async (idCliente) => {
+        const sql = 'DELETE FROM clientes WHERE id_cliente = ?';
+        const values = [idCliente];
+        const [rows] = await pool.query(sql, values);
+        return rows;
+    }
+}
 
 module.exports = { clienteModel };

@@ -109,6 +109,69 @@ const clienteController = {
         }
     },
 
+    incluiEndereco: async (req, res) => {
+        try {
+            const { idCliente } = req.params;
+            const { cep, numero_casa, complemento } = req.body;
+
+            if (!cep || !numero_casa) {
+                return res.status(400).json({ message: "CEP e número da casa são obrigatórios!" });
+            }
+
+            const cliente = await clienteModel.selectById(idCliente);
+            if (cliente.length === 0) {
+                return res.status(404).json({ message: "Cliente não encontrado!" });
+            }
+
+            const dadosCep = await DadosCep(cep);
+            if (dadosCep.erro) {
+                return res.status(400).json({ message: dadosCep.message });
+            }
+
+            const resultado = await clienteModel.insertEndereco(
+                idCliente,
+                dadosCep.logradouro,
+                numero_casa,
+                dadosCep.bairro,
+                dadosCep.cidade,
+                dadosCep.estado,
+                cep,
+                complemento || ""
+            );
+
+            return res.status(201).json({ message: "Endereço adicionado com sucesso!", idEndereco: resultado.insertId });
+
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Erro no servidor", error: error.message });
+        }
+    },
+
+
+
+    incluiTelefone: async (req, res) => {
+        try {
+            const { idCliente } = req.params;
+            const { numero_telefone } = req.body;
+
+            if (!numero_telefone) {
+                return res.status(400).json({ message: "Número de telefone é obrigatório!" });
+            }
+
+            const cliente = await clienteModel.selectById(idCliente);
+            if (cliente.length === 0) {
+                return res.status(404).json({ message: "Cliente não encontrado!" });
+            }
+
+            const resultado = await clienteModel.insertTelefone(idCliente, numero_telefone);
+
+            return res.status(201).json({ message: "Telefone adicionado com sucesso!", idTelefone: resultado.insertId });
+
+        } catch (error) {
+            console.error(error); res.status(500).json({ message: "Erro ao adicionar telefone", error: error.message });
+        }
+    },
+
 
     atualizaCliente: async (req, res) => {
         try {
@@ -239,7 +302,36 @@ const clienteController = {
             return res.status(500).json({ message: "Erro no servidor" });
         }
     },
+
+    excluiCliente: async (req, res) => {
+        try {
+            const { idCliente } = req.params;
+            const cliente = await clienteModel.selectById(idCliente);
+
+            if (cliente.length === 0) {
+                return res.status(404).json({ message: "Cliente não encontrado!!" });
+            }
+
+            const pedidos = await clienteModel.selectPedidosByCliente(idCliente);
+            if (pedidos.length > 0) {
+                return res.status(400).json({ message: "Não é possível excluir, o cliente ja possui pedidos registrados!" });
+            }
+
+            await clienteModel.deleteTelefone(idCliente);
+            await clienteModel.deleteEnderecos(idCliente);
+            await clienteModel.deleteCliente(idCliente);
+
+            return res.status(200).json({ message: "Cliente excluído com sucesso!" });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Erro ao excluir cliente", error: error.message });
+        }
+    },
+
+
+
 }
+
 
 module.exports = { clienteController };
 
