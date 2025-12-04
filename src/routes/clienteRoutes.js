@@ -14,7 +14,7 @@ clienteRoutes.delete('/clientes/:idCliente', clienteController.excluiCliente);
 clienteRoutes.post('/clientes/:idCliente/telefones', clienteController.incluiTelefone);
 clienteRoutes.post('/clientes/:idCliente/enderecos', clienteController.incluiEndereco);
 
-clienteRoutes.delete('/enderecos/:idEndereco', clienteController.excluiEndereco);
-clienteRoutes.delete('/telefones/:idTelefone', clienteController.excluiTelefone);
+clienteRoutes.delete('/enderecos/:idEndereco', clienteController.excluiEndereco); 
+
 
 module.exports = { clienteRoutes };

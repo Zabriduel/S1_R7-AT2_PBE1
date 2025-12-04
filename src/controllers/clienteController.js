@@ -1,32 +1,5 @@
 const { clienteModel } = require('../models/clienteModel');
 
-const DadosCep = async (cep) => {
-    try {
-        if (!cep || String(cep).length !== 8 || isNaN(Number(cep))) {
-            return { erro: true, message: "CEP inválido ou não informado." };
-        }
-        console.log(cep);
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const json = await response.json();
-
-        if (json.erro) {
-            return { erro: true, message: "CEP não encontrado no ViaCEP." };
-        }
-
-        return {
-            erro: false,
-            logradouro: json.logradouro,
-            bairro: json.bairro,
-            cidade: json.localidade,
-            estado: json.uf
-        };
-
-    } catch (error) {
-        console.error("Erro ViaCEP:", error);
-        return { erro: true, message: "Erro ao consultar o ViaCEP." };
-    }
-};
-
 const clienteController = {
     selecionaTodos: async (req, res) => {
         try {
@@ -327,6 +300,41 @@ const clienteController = {
             return res.status(500).json({ message: "Erro ao excluir cliente", error: error.message });
         }
     },
+
+    excluiEndereco: async (req, res) => {
+        try {
+            const { idEndereco } = req.params;
+
+            const endereco = await clienteModel.selectEnderecoById(idEndereco);
+            if (endereco.length === 0) {
+                return res.status(404).json({ message: "Endereço não encontrado!" });
+            }
+
+            const idCliente = endereco[0].id_cliente;
+
+            const totalEnderecos = await clienteModel.countEnderecos(idCliente);
+
+            if (totalEnderecos <= 1) {
+                return res.status(400).json({
+                    message: "O cliente deve ter pelo menos um endereço cadastrado. Não é possível excluir o único endereço."
+                });
+            }
+
+            await clienteModel.deleteEnderecoById(idEndereco);
+
+            return res.status(200).json({
+                message: "Endereço excluído com sucesso!"
+            });
+
+        } catch (error) {
+            console.error("Erro ao excluir endereço:", error);
+            return res.status(500).json({
+                message: "Erro interno ao excluir endereço",
+                error: error.message
+            });
+        }
+    },
+
 
 
 
