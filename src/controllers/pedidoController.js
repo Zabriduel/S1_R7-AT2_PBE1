@@ -1,5 +1,5 @@
 const { pedidoModel } = require('../models/pedidoModel');
-const { clienteModel } = require('../models/clienteModel');
+const { funcoesUteis } = require('../utils/utils');
 
 
 const pedidoController = {
@@ -43,13 +43,13 @@ const pedidoController = {
             const idTipoEntrega = Number(req.params.idTipoEntrega);
 
             const { pesoCarga, valorKM, valorKG } = req.body;
-            
-            if (!idCliente || !idTipoEntrega || !distanciaKm || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number') {
+
+            if (!idCliente || !idEndereco || !idTipoEntrega || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number') {
                 return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
             }
 
-            const distanciaKm = await distanciaCeps(idEndereco);
-
+            const distanciaKm = await funcoesUteis.distanciaCeps(idEndereco);
+            console.log(distanciaKm);
             const resultado = await pedidoModel.insertPedido(distanciaKm, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
 
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
@@ -94,11 +94,11 @@ const pedidoController = {
             const idPedido = Number(req.params.idPedido);
             const idStatusEntrega = Number(req.params.idStatusEntrega);
 
-            const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega,idPedido);
-            res.status(201).json({message:'Status do pedido atualizado com sucesse.', data: resultado});
+            const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
+            res.status(201).json({ message: 'Status do pedido atualizado com sucesse.', data: resultado });
         } catch (error) {
             console.error(error);
-            res.status(500).json({message: 'Ocorreu um erro no servidor', errorMessage: error.message});
+            res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message });
         }
     },
     deletarPedido: async (req, res) => {

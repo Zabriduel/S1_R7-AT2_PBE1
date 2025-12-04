@@ -1,3 +1,4 @@
+const { clienteModel } = require('../models/clienteModel');
 const geolib = require('geolib');
 
 const funcoesUteis = {
