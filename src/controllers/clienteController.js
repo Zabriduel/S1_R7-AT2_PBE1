@@ -1,4 +1,5 @@
 const { clienteModel } = require('../models/clienteModel');
+const { DadosCep } = require('../utils/utils');
 
 const clienteController = {
     selecionaTodos: async (req, res) => {
@@ -279,27 +280,26 @@ const clienteController = {
     excluiCliente: async (req, res) => {
         try {
             const { idCliente } = req.params;
-            const cliente = await clienteModel.selectById(idCliente);
 
+            const cliente = await clienteModel.selectById(idCliente);
             if (cliente.length === 0) {
-                return res.status(404).json({ message: "Cliente não encontrado!!" });
+                return res.status(404).json({ message: "Cliente não encontrado!" });
             }
 
             const pedidos = await clienteModel.selectPedidosByCliente(idCliente);
             if (pedidos.length > 0) {
-                return res.status(400).json({ message: "Não é possível excluir, o cliente ja possui pedidos registrados!" });
+                return res.status(400).json({ message: "Não é possível excluir: cliente possui pedidos registrados." });
             }
-
-            await clienteModel.deleteTelefone(idCliente);
-            await clienteModel.deleteEnderecos(idCliente);
             await clienteModel.deleteCliente(idCliente);
 
             return res.status(200).json({ message: "Cliente excluído com sucesso!" });
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: "Erro ao excluir cliente", error: error.message });
         }
     },
+
 
     excluiEndereco: async (req, res) => {
         try {

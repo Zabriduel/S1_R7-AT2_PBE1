@@ -114,6 +114,13 @@ const clienteModel = {
         return result;
     },
 
+    deleteCliente: async (idCliente) => {
+        const sql = "DELETE FROM clientes WHERE id_cliente = ?;";
+        const values = [idCliente]
+        const [result] = await pool.query(sql, values);
+        return result;
+    },
+
     countEnderecos: async (idCliente) => {
         const sql = "SELECT COUNT(*) AS total FROM enderecos WHERE id_cliente = ?";
         const values = [idCliente];
