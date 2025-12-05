@@ -1,7 +1,15 @@
 const { clienteModel } = require('../models/clienteModel');
-const { DadosCep } = require('../utils/utils');
+const { funcoesUteis } = require('../utils/utils');
 
 const clienteController = {
+    /**
+     * Retorna os clientes cadastrados rota GET /clientes
+     * @async
+     * @function selecionaTodos
+     * @param {Request} req Objeto da requisição HTTP
+     * @param {Response} res Objeto da resposta HTTP
+     * @returns {Promise<Array<Objetct>>} Objeto contendo o resultado da consulta
+     */
     selecionaTodos: async (req, res) => {
         try {
             const { idCliente } = req.query;
@@ -30,6 +38,39 @@ const clienteController = {
         }
     },
 
+    /** 
+     * Retorna um cliente específico pelo ID informado na rota GET /clientes/:idCliente
+     * @async
+     * @function selecionarClientePorId
+     * @param {Request} req Objeto da requisição HTTP
+     * @param {Response} res Objeto da resposta HTTP
+     * @returns {<Promise<Array<<Objetct>} Objeto contendo o resultado da consulta 
+     */
+    selecionarClientePorId: async (req, res) => {
+        try {
+            const { idCliente } = req.params;
+            if (!idCliente) {
+                return res.status(400).json({ message: "Informe o ID do cliente." });
+            }
+            const resultado = await clienteModel.selectClientesPorId(idCliente);
+            if (resultado.length === 0) {
+                return res.status(404).json({ message: "Cliente não encontrado." });
+            }
+            return res.status(200).json({ message: "Cliente encontrado com sucesso.", dados: resultado[0] });
+        } catch (error) {
+            console.error("Erro ao buscar cliente por ID:", error);
+            return res.status(500).json({ message: "Erro interno ao buscar o cliente.", error: error.message });
+        }
+    },
+
+    /**
+     * Cadastra um novo cliente, incluindo telefone e endereço na rota POST /clientes
+     * @async
+     * @function incluiRegistro
+     * @param {Request} req Objeto da requisição HTTP
+     * @param {Response} res Objeto da resposta HTTP
+     * @returns {<Promise<Array<<Objetct>} Objeto contendo o resultado do ID do cliente criado
+     */
     incluiRegistro: async (req, res) => {
         try {
             const { nome, cpf, email, numero_telefone, cep, numero_casa, complemento, data_nasc, idade, status_cliente } = req.body;
@@ -50,8 +91,8 @@ const clienteController = {
             if (!emailRegex.test(email)) {
                 return res.status(400).json({ message: 'email inválido!' });
             }
+            const dadosCep = await funcoesUteis.dadosCep(cep);
 
-            const dadosCep = await DadosCep(cep);
             if (dadosCep.erro) {
                 return res.status(400).json({ message: dadosCep.message });
             }
@@ -83,6 +124,14 @@ const clienteController = {
         }
     },
 
+    /**
+     * Adiciona um novo endereço a um cliente existente na rota POST /clientes/:idCliente/endereco
+     * @async
+     * @function incluiEndereco 
+     * @param {Request} req  Objeto contendo a requisição HTTP
+     * @param {Response} res Objeto contendo a resposta HTTP
+     * @returns {<Promise<Array<<Objetct>} Confirmação e ID do endereço criado
+     */
     incluiEndereco: async (req, res) => {
         try {
             const { idCliente } = req.params;
@@ -97,7 +146,7 @@ const clienteController = {
                 return res.status(404).json({ message: "Cliente não encontrado!" });
             }
 
-            const dadosCep = await DadosCep(cep);
+            const dadosCep = await funcoesUteis.dadosCep(cep);
             if (dadosCep.erro) {
                 return res.status(400).json({ message: dadosCep.message });
             }
@@ -121,8 +170,14 @@ const clienteController = {
         }
     },
 
-
-
+    /**
+   * Adiciona um novo número de telefone ao cliente na POST /clientes/:idCliente/telefone
+   * @async
+   * @function incluiEndereco 
+   * @param {Request} req  Requisição HTTP contendo o número de telefone
+   * @param {Response} res Resposta HTTP 
+   * @returns {<Promise<Array<<Objetct>} Confirmação e ID do telefone criado
+   */
     incluiTelefone: async (req, res) => {
         try {
             const { idCliente } = req.params;
@@ -146,7 +201,14 @@ const clienteController = {
         }
     },
 
-
+    /**
+     * Atualiza os dados principais do cliente (nome, CPF, email) na rota PUT /clientes/:idCliente
+     * @async
+     * @function atualizaCliente
+     * @param {Request} req - Requisição HTTP contendo dados atualizados
+     * @param {Response} res - Resposta HTTP
+     * @returns {Promise<Array<<Objetct>} Objeto contendo a confirmação e dados atualizados
+     */
     atualizaCliente: async (req, res) => {
         try {
             const { idCliente } = req.params;
@@ -186,6 +248,7 @@ const clienteController = {
             return res.status(500).json({ message: "Erro no servidor", error: error.message });
         }
     },
+
 
     atualizaStatus: async (req, res) => {
         try {
@@ -248,7 +311,7 @@ const clienteController = {
                 return res.status(404).json({ message: "Endereço não encontrado!" });
             }
 
-            const dadosCep = await DadosCep(cep);
+            const dadosCep = await funcoesUteis.dadosCep(cep);
 
             if (dadosCep.erro) {
                 return res.status(400).json({ message: dadosCep.message });
@@ -315,31 +378,49 @@ const clienteController = {
             const totalEnderecos = await clienteModel.countEnderecos(idCliente);
 
             if (totalEnderecos <= 1) {
-                return res.status(400).json({
-                    message: "O cliente deve ter pelo menos um endereço cadastrado. Não é possível excluir o único endereço."
-                });
+                return res.status(400).json({ message: "O cliente deve ter pelo menos um endereço cadastrado. Não é possível excluir um único endereço." });
             }
 
             await clienteModel.deleteEnderecoById(idEndereco);
 
-            return res.status(200).json({
-                message: "Endereço excluído com sucesso!"
-            });
+            return res.status(200).json({ message: "Endereço excluído com sucesso!" });
 
         } catch (error) {
             console.error("Erro ao excluir endereço:", error);
-            return res.status(500).json({
-                message: "Erro interno ao excluir endereço",
-                error: error.message
-            });
+            return res.status(500).json({ message: "Erro interno ao excluir endereço", error: error.message });
         }
     },
 
+    excluiTelefone: async (req, res) => {
+        try {
+            const { idTelefone } = req.params;
 
 
+            const telefone = await clienteModel.selectTelefoneById(idTelefone);
+            if (telefone.length === 0) {
+                return res.status(404).json({ message: "Telefone não encontrado!" });
+            }
 
+            const idCliente = telefone[0].id_cliente;
+
+            const totalTelefones = await clienteModel.countTelefones(idCliente);
+
+            if (totalTelefones <= 1) {
+                return res.status(400).json({ message: "O cliente deve ter pelo menos um telefone cadastrado. Não é possível excluir um único telefone." });
+            }
+
+            await clienteModel.deleteTelefoneById(idTelefone);
+
+            return res.status(200).json({
+                message: "Telefone excluído com sucesso!"
+            });
+
+        } catch (error) {
+            console.error("Erro ao excluir telefone:", error);
+            return res.status(500).json({ message: "Erro interno ao excluir telefone", error: error.message });
+        }
+    }
 }
-
 
 module.exports = { clienteController };
 
