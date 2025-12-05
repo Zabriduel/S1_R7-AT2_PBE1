@@ -8,7 +8,7 @@ const pedidoModel = {
      * @param {number} pIdPedido Recebe o valor único do pedido que será consultado
      * @returns  {Promise<Array<Object>>}
      * @example 
-     * const pedidos = await pedidoModel.selectPedidoById(idPedido);
+     * const pedidos = await pedidoModel.selectById(idPedido);
      * console.log(pedidos);
      * // Saída esperada
      * [
@@ -49,7 +49,7 @@ const pedidoModel = {
      * @function selectAllPedidos
      * @returns {Promise<Array<Object>>}
      * @example 
-     * const pedidos = await pedidoModel.selectPedidoById(idPedido);
+     * const pedidos = await pedidoModel.selectAllPedidos();
      * console.log(pedidos);
      * // Saída esperada
      * [
@@ -63,14 +63,27 @@ const pedidoModel = {
         return rowsPedido;
     },
     /**
+     * Cadastra 
      * 
-     * @param {number} pDistancia 
-     * @param {number} pPesoCarga 
-     * @param {number} pValorKM 
-     * @param {number} pValorKG 
-     * @param {number} pIdCliente 
-     * @param {number} pIdTipoEntrega 
-     * @returns 
+     * @param {number} pDistancia Recebe o valor da distância entre a empresa e o cliente
+     * @param {number} pPesoCarga Recebe o valor do peso da entrega em kg
+     * @param {number} pValorKM Recebe o valor por KM da entrega
+     * @param {number} pValorKG Recebe o valor por KG da entrega
+     * @param {number} pIdCliente Recebe o valor único do cliente
+     * @param {number} pIdTipoEntrega  Recebe o valor único do tipo de entrega
+     * @returns {Promise<Object>} Retorna um objeto contendo propriedades sobre o resultado da execução da query.
+     * @example
+     * const resultado = await pedidoModel.updatePedido(idPedido, novaDistancia, novoPeso, novoValorKm, novoValorKg, novoTipoEntrega);
+     *  "resultado":{
+     *      "fieldCount" : 0,
+     *      "affectedRows": 1,
+     *      "insertId": 1,
+     *      "info": "",
+     *      "serverStatus": 2,
+     *      "warningStatus": 0,
+     *      "changedRows": 0 
+     * }
+     * 
      */
     insertPedido: async (pDistancia, pPesoCarga, pValorKM, pValorKG, pIdCliente, pIdTipoEntrega) => {
         const connection = await pool.getConnection();
@@ -90,6 +103,28 @@ const pedidoModel = {
         }
 
     },
+    /**
+     * Função para atualizar informações do pedido
+     * @param {number} pIdPedido Recebe o valor único do pedido
+     * @param {number} pDistancia Recebe o valor da distância entre a empresa e o cliente
+     * @param {number} pPesoCarga Recebe o valor do peso da entrega em kg
+     * @param {number} pValorKM Recebe o valor por KM da entrega
+     * @param {number} pValorKG Recebe o valor por KG da entrega
+     * @param {number} pIdTipoEntrega Recebe o valor único do tipo de entrega
+     * @returns 
+     * @example
+     * const resultado = await pedidoModel.updatePedido(idPedido, novaDistancia, novoPeso, novoValorKm, novoValorKg, novoTipoEntrega);
+	 *	"resultado": {
+	 *		"fieldCount": 0,
+	 *		"affectedRows": 1,
+	 *		"insertId": 0,
+	 *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
+	 *		"serverStatus": 3,
+	 *		"warningStatus": 0,
+	 *		"changedRows": 1
+	 *	}
+	 *
+     */
     updatePedido: async (pIdPedido, pDistancia, pPesoCarga, pValorKM, pValorKG, pIdTipoEntrega) => {
         const connection = await pool.getConnection();
         try {
@@ -106,6 +141,23 @@ const pedidoModel = {
             throw error;
         }
     },
+    /**
+     * 
+     * @param {number} pIdStatusEntrega  Recebe o valor único do status de entrega
+     * @param {number} pIdPedido  Recebe o valor único do pedido
+     * @returns 
+     * @example
+     * const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
+ 	 *	"resultado": {
+	 *		"fieldCount": 0,
+	 *		"affectedRows": 1,
+	 *		"insertId": 0,
+	 *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
+	 *		"serverStatus": 3,
+	 *		"warningStatus": 0,
+	 *		"changedRows": 1
+	 *	}
+     */
     updateStatusPedido: async (pIdStatusEntrega, pIdPedido) => {
         const connection = await pool.getConnection();
         try {
@@ -123,6 +175,11 @@ const pedidoModel = {
             throw error;
         }
     },
+    /**
+     * 
+     * @param {*} pIdPedido 
+     * @returns 
+     */
     deletePedido: async (pIdPedido) => {
         const sqlPedido = 'DELETE FROM pedidos WHERE id_pedido = ?;';
         const valuesPedido = [pIdPedido];
