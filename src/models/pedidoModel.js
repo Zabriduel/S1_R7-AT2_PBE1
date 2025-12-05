@@ -43,11 +43,35 @@ const pedidoModel = {
 
         return rowsPedido
     },
+    /**
+     * Retornar todos os pedidos encontrados
+     * @async
+     * @function selectAllPedidos
+     * @returns {Promise<Array<Object>>}
+     * @example 
+     * const pedidos = await pedidoModel.selectPedidoById(idPedido);
+     * console.log(pedidos);
+     * // Saída esperada
+     * [
+     *      {coluna1: "Valor coluna1", coluna2: "Valor coluna 2", ...},
+     *      {coluna1: "Valor coluna1", coluna2: "Valor coluna 2", ...},
+     * ]
+     */
     selectAllPedidos: async () => {
         const sqlPedido = "SELECT * FROM view_pedidos";
         const [rowsPedido] = await pool.query(sqlPedido);
         return rowsPedido;
     },
+    /**
+     * 
+     * @param {number} pDistancia 
+     * @param {number} pPesoCarga 
+     * @param {number} pValorKM 
+     * @param {number} pValorKG 
+     * @param {number} pIdCliente 
+     * @param {number} pIdTipoEntrega 
+     * @returns 
+     */
     insertPedido: async (pDistancia, pPesoCarga, pValorKM, pValorKG, pIdCliente, pIdTipoEntrega) => {
         const connection = await pool.getConnection();
         try {

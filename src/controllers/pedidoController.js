@@ -12,7 +12,7 @@ const pedidoController = {
             }
 
             const resultado = await pedidoModel.selectPedidoById(idPedido);
-            
+
             if (resultado.length === 0) {
                 return res.status(200).json({ message: 'A consulta não retornou resultados' });
             }
@@ -35,7 +35,6 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.errorMessage });
         }
     },
-
     criarPedido: async (req, res) => {
         try {
             const idEndereco = Number(req.params.idEndereco);
