@@ -8,11 +8,11 @@ const pedidoController = {
             const idPedido = Number(req.params.idPedido);
 
             if (!idPedido || typeof idPedido != 'number') {
-                return res.status(200).json({ message: 'Verificar os dados enviados e tente novamete' });
+                return res.status(200).json({ message: 'Verifique os dados enviados e tente novamete' });
             }
 
             const resultado = await pedidoModel.selectPedidoById(idPedido);
-
+            
             if (resultado.length === 0) {
                 return res.status(200).json({ message: 'A consulta não retornou resultados' });
             }
@@ -44,12 +44,11 @@ const pedidoController = {
 
             const { pesoCarga, valorKM, valorKG } = req.body;
 
-            if (!idCliente || !idEndereco || !idTipoEntrega || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number') {
-                return res.status(400).json({ message: 'Verificar os dados enviados e tente novamete' });
+            if (!idCliente || !idEndereco || !idTipoEntrega || !pesoCarga || !valorKM || !valorKG || typeof idCliente != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number' || typeof pesoCarga != 'number' || typeof valorKM != 'number' || typeof valorKG != 'number') {
+                return res.status(400).json({ message: 'Verifique os dados enviados e tente novamete' });
             }
 
             const distanciaKm = await funcoesUteis.distanciaCeps(idEndereco);
-            console.log(distanciaKm);
             const resultado = await pedidoModel.insertPedido(distanciaKm, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
 
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
@@ -65,7 +64,12 @@ const pedidoController = {
             const idEndereco = Number(req.params.idEndereco);
             const { idTipoEntrega, pesoCarga, valorKM, valorKG } = req.body;
 
-            const distanciaKm = await distanciaCeps(idEndereco);
+
+            if (!idPedido || !idEndereco || !idTipoEntrega || !pesoCarga || !valorKM || !valorKG || typeof idPedido != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number' || typeof pesoCarga != 'number' || typeof valorKM != 'number' || typeof valorKG != 'number') {
+                return res.status(400).json({ message: 'Verifique os dados enviados e tente novamete' });
+            }
+
+            const distanciaKm = await funcoesUteis.distanciaCeps(idEndereco);
 
             const pedidoAtual = await pedidoModel.selectById(idPedido);
             if (pedidoAtual.length === 0) {

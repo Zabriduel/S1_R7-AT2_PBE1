@@ -1,6 +1,20 @@
 const { pool } = require('../config/db');
 
 const pedidoModel = {
+    /**
+     * Retorna um pedido cadastrado com todas as informações sobre ele
+     * @async
+     * @function selectById
+     * @param {number} pIdPedido Recebe o valor único do pedido que será consultado
+     * @returns  {Promise<Array<Object>>}
+     * @example 
+     * const pedidos = await pedidoModel.selectPedidoById(idPedido);
+     * console.log(pedidos);
+     * // Saída esperada
+     * [
+     *      {coluna1: "Valor coluna1", coluna2: "Valor coluna 2", ...},
+     * ]
+     */
     selectById: async (pIdPedido) => {
         const sqlPedido = "SELECT * FROM pedidos WHERE id_pedido =?;"
         const valuesPedido = [pIdPedido];
@@ -8,17 +22,31 @@ const pedidoModel = {
 
         return rowsPedido
     },
+    /**
+     * Retorna um pedido cadastrado com todas as informações relevantes sobre ele
+     * @async
+     * @function selectPedidoById
+     * @param {number} pIdPedido Recebe o valor único do pedido que será consultado
+     * @returns  {Promise<Array<Object>>}
+     * @example 
+     * const pedidos = await pedidoModel.selectPedidoById(idPedido);
+     * console.log(pedidos);
+     * // Saída esperada
+     * [
+     *      {coluna1: "Valor coluna1", coluna2: "Valor coluna 2", ...},
+     * ]
+     */
     selectPedidoById: async (pIdPedido) => {
-        const sqlPedido = "SELECT c.nome_cliente AS Cliente, p.data_pedido AS 'Data do pedido', p.distancia AS Distancia,p.peso_carga AS Peso,p.valor_kg AS 'Valor por KG',p.valor_km AS 'Valor por KM',te.descricao AS 'Tipo da entrega',e.valor_final AS 'Valor total', se.descricao AS 'Status Pedido' FROM pedidos p JOIN clientes c ON p.id_cliente = c.id_cliente JOIN tipo_entrega te ON p.id_tipo_entrega = te.id_tipo_entrega JOIN entregas e ON p.id_pedido = e.id_pedido JOIN status_entrega se ON se.id_status_entrega = e.id_status_entrega WHERE p.id_pedido =?;"
+        const sqlPedido = "SELECT * FROM view_pedidos WHERE Pedido=?"
         const valuesPedido = [pIdPedido];
         const [rowsPedido] = await pool.query(sqlPedido, valuesPedido);
 
-        return rowsPedido 
+        return rowsPedido
     },
     selectAllPedidos: async () => {
-        const sqlPedido = "SELECT c.nome_cliente AS Cliente, p.data_pedido AS 'Data do pedido', p.distancia AS Distancia,p.peso_carga AS Peso,p.valor_kg AS 'Valor por KG',p.valor_km AS 'Valor por KM',te.descricao AS 'Tipo da entrega',e.valor_final AS 'Valor total', se.descricao AS 'Status Pedido' FROM pedidos p JOIN clientes c ON p.id_cliente = c.id_cliente JOIN tipo_entrega te ON p.id_tipo_entrega = te.id_tipo_entrega JOIN entregas e ON p.id_pedido = e.id_pedido JOIN status_entrega se ON se.id_status_entrega = e.id_status_entrega;";
+        const sqlPedido = "SELECT * FROM view_pedidos";
         const [rowsPedido] = await pool.query(sqlPedido);
-        return  rowsPedido ;
+        return rowsPedido;
     },
     insertPedido: async (pDistancia, pPesoCarga, pValorKM, pValorKG, pIdCliente, pIdTipoEntrega) => {
         const connection = await pool.getConnection();
@@ -72,16 +100,12 @@ const pedidoModel = {
         }
     },
     deletePedido: async (pIdPedido) => {
-        try {
-            const sqlPedido = 'DELETE FROM pedidos WHERE id_pedido = ?;';
-            const valuesPedido = [pIdPedido];
-            const [rowsPedido] = await pool.query(sqlPedido, valuesPedido);
-            //  Aciona a trigger: trg_before_delete_pedidos 
+        const sqlPedido = 'DELETE FROM pedidos WHERE id_pedido = ?;';
+        const valuesPedido = [pIdPedido];
+        const [rowsPedido] = await pool.query(sqlPedido, valuesPedido);
+        //  Aciona a trigger: trg_before_delete_pedidos 
 
-            return { rowsPedido };
-        } catch (error) {
-            throw error;
-        }
+        return { rowsPedido };
 
     }
 }
