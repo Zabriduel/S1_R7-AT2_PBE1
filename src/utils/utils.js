@@ -3,12 +3,7 @@ const geolib = require('geolib');
 
 const funcoesUteis = {
     distanciaCeps: async (pIdEndereco) => {
-        console.log('chegou função');
-
         const dadosCliente = await clienteModel.selectEnderecoById(pIdEndereco);
-        console.log('parou');
-        console.log(dadosCliente.length);
-
 
         if (!dadosCliente || dadosCliente.length === 0) {
             throw new Error("Endereço do cliente não encontrado.");
