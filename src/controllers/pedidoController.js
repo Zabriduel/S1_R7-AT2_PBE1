@@ -3,6 +3,21 @@ const { funcoesUteis } = require('../utils/utils');
 
 
 const pedidoController = {
+    /**
+     * Função para consultar um pedido pelo ID
+     * Rota GET /pedidos/:idPedido
+     * @async
+     * @function consultarPedidoPorId
+     * @param {Object} req Objeto da requisição contendo o parâmetro idPedido
+     * @param {Object} res Objeto de resposta HTTP
+     * @returns {Promise<Array<Object>>} Retorna os dados do pedido ou mensagem de erro
+     * @example
+     * 
+     * // resposta:
+     * {
+     *   "data": [{ "id_pedido": 5, "distancia": 12.5, ... }]
+     * }
+     */
     consultarPedidoPorId: async (req, res) => {
         try {
             const idPedido = Number(req.params.idPedido);
@@ -23,6 +38,24 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.errorMessage });
         }
     },
+    /**
+ * Função para consultar todos os pedidos cadastrados
+ * Rota GET /pedidos
+ * @async
+ * @function consultaPedidos
+ * @param {Object} req Objeto da requisição
+ * @param {Object} res Objeto de resposta HTTP
+ * @returns {Promise<Array<Object>>} Retorna todos os pedidos ou mensagem caso vazio
+ * @example
+ * 
+ * // resposta:
+ * {
+ *   "data": [
+ *      { "id_pedido": 1, ... },
+ *      { "id_pedido": 2, ... }
+ *   ]
+ * }
+ */
     consultaPedidos: async (req, res) => {
         try {
             const resultado = await pedidoModel.selectAllPedidos();
@@ -35,6 +68,28 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.errorMessage });
         }
     },
+    /**
+     * Função para criar um novo pedido
+     * Rota POST /pedidos/:idCliente/:idEndereco/:idTipoEntrega
+     * @async
+     * @function criarPedido
+     * @param {Object} req Objeto da requisição contendo parâmetros e corpo JSON
+     * @param {Object} res Objeto de resposta HTTP
+     * @returns {Promise<Object>} Mensagem de sucesso e dados inseridos
+     * @example
+     * 
+     * {
+     *   "pesoCarga": 50,
+     *   "valorKM": 2.5,
+     *   "valorKG": 1.2
+     * }
+     *
+     * // resposta:
+     * {
+     *   "message": "Registro incluído com sucesso.",
+     *   "data": { "insertId": 15, ... }
+     * }
+     */
     criarPedido: async (req, res) => {
         try {
             const idEndereco = Number(req.params.idEndereco);
@@ -47,9 +102,11 @@ const pedidoController = {
                 return res.status(400).json({ message: 'Verifique os dados enviados e tente novamete' });
             }
 
-            const distanciaKm = await funcoesUteis.distanciaCeps(idEndereco);
+
+            const distanciaKm = await funcoesUteis.calcularDistancia(idEndereco);
             const resultado = await pedidoModel.insertPedido(distanciaKm, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
 
+            console.log(resultado)
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
 
         } catch (error) {
@@ -57,18 +114,34 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocoreu um erro no servidor', errorMessage: error.message });
         }
     },
+    /**
+     * Função para alterar um pedido existente
+     * Rota PUT /pedidos/:idPedido/endereco/:idEndereco
+     * @async
+     * @function alterarPedido
+     * @param {Object} req Objeto da requisição contendo parâmetros e corpo JSON
+     * @param {Object} res Objeto de resposta HTTP
+     * @returns {Promise<Object>} Retorna mensagem e resultado da atualização
+     * @example
+     * 
+     * {
+     *   "pesoCarga": 40,
+     *   "valorKM": 3.0,
+     *   "valorKG": 1.4,
+     *   "idTipoEntrega": 2
+     * }
+     */
     alterarPedido: async (req, res) => {
         try {
             const idPedido = Number(req.params.idPedido);
             const idEndereco = Number(req.params.idEndereco);
             const { idTipoEntrega, pesoCarga, valorKM, valorKG } = req.body;
 
-
-            if (!idPedido || !idEndereco || !idTipoEntrega || !pesoCarga || !valorKM || !valorKG || typeof idPedido != 'number' || typeof idEndereco != 'number' || typeof idTipoEntrega != 'number' || typeof pesoCarga != 'number' || typeof valorKM != 'number' || typeof valorKG != 'number') {
+            if (!idPedido || !idEndereco || (!idTipoEntrega || typeof idTipoEntrega != 'number') || (!pesoCarga || typeof pesoCarga != 'number') || (!valorKM || typeof valorKM != 'number') || (!valorKG || typeof valorKG != 'number') || typeof idPedido != 'number' || typeof idEndereco != 'number') {
                 return res.status(400).json({ message: 'Verifique os dados enviados e tente novamete' });
             }
 
-            const distanciaKm = await funcoesUteis.distanciaCeps(idEndereco);
+            const distanciaKm = await funcoesUteis.calcularDistancia(idEndereco);
 
             const pedidoAtual = await pedidoModel.selectById(idPedido);
             if (pedidoAtual.length === 0) {
@@ -92,6 +165,19 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocoreu um erro no servidor', errorMessage: error.message });
         }
     },
+    /**
+ * Função para alterar o status de um pedido
+ * Rota PATCH /pedidos/:idPedido/status/:idStatusEntrega
+ * @async
+ * @function alterarStatusPedido
+ * @param {Object} req Objeto da requisição contendo idPedido e idStatusEntrega
+ * @param {Object} res Objeto de resposta HTTP
+ * @returns {Promise<Object>} Mensagem e resultado da atualização
+ * @example
+ * 
+ * // resposta:
+ * { "message": "Status do pedido atualizado com sucesso.", "data": {...} }
+ */
     alterarStatusPedido: async (req, res) => {
         try {
             const idPedido = Number(req.params.idPedido);
@@ -104,6 +190,22 @@ const pedidoController = {
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message });
         }
     },
+    /**
+ * Função para excluir um pedido pelo ID
+ * Rota DELETE /pedidos/delete/:idPedido
+ * @async
+ * @function deletarPedido
+ * @param {Object} req Objeto da requisição contendo idPedido
+ * @param {Object} res Objeto de resposta HTTP
+ * @returns {Promise<Object>} Mensagem de sucesso e resultado da exclusão
+ * @example
+ * 
+ * // resposta:
+ * {
+ *   "message": "Registro deletado com sucesso.",
+ *   "data": { "affectedRows": 1 }
+ * }
+ */
     deletarPedido: async (req, res) => {
         try {
             const idPedido = Number(req.params.idPedido);
