@@ -172,7 +172,7 @@ const pedidoController = {
  * @function alterarStatusPedido
  * @param {Object} req Objeto da requisição contendo idPedido e idStatusEntrega
  * @param {Object} res Objeto de resposta HTTP
- * @returns {JSON} Mensagem e resultado da atualização
+ * @returns {Promise<Object>} Mensagem e resultado da atualização
  * @example
  * 
  * // resposta:
