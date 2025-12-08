@@ -9,7 +9,7 @@ const clienteController = {
      * @function selecionaTodos
      * @param {Object} req Objeto da requisição HTTP (query opcional: idCliente)
      * @param {Object} res Objeto de resposta HTTP
-     * @returns {JSON} Lista de clientes, um cliente específico ou mensagem de aviso
+     * @returns {Promise<Array<Object>>} Lista de clientes, um cliente específico ou mensagem de aviso
      * 
      * @example
      * // GET /clientes
@@ -64,7 +64,7 @@ const clienteController = {
      * @function selecionarClientePorId
      * @param {Object} req Objeto da requisição HTTP (params: idCliente)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Dados do cliente ou mensagem de erro
+     * @returns {Promise<Array<Object>>} Dados do cliente ou mensagem de erro
      * 
      * @example
      * // GET /clientes/5
@@ -100,7 +100,7 @@ const clienteController = {
      * @function selecionaClientePorCpf
      * @param {Object} req Objeto da requisição HTTP (params: cpf)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Dados do cliente encontrado ou mensagem de erro
+     * @returns {Promise<Array<Object>>} Dados do cliente encontrado ou mensagem de erro
      * 
      * @example
      * // GET /clientes/cpf/12436476554
@@ -141,7 +141,7 @@ const clienteController = {
   * @function selectByEmail
   * @param {Request} req Objeto da requisição HTTP
   * @param {Response} res Objeto da resposta HTTP
-  * @returns {JSON} Retorna os dados do cliente ou mensagem caso não exista
+  * @returns {Promise<Array<Object>>} Retorna os dados do cliente ou mensagem caso não exista
   */
     selectByEmail: async (req, res) => {
         try {
@@ -198,7 +198,7 @@ const clienteController = {
      * @function incluiRegistro
      * @param {Object} req Objeto da requisição HTTP contendo os dados do cliente no body
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com o ID do cliente cadastrado ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com o ID do cliente cadastrado ou mensagem de erro
      * 
      * @example
      * // POST /clientes
@@ -274,7 +274,7 @@ const clienteController = {
      * @function incluiEndereco
      * @param {Object} req Objeto da requisição HTTP (params: idCliente, body: cep, numero_casa, complemento)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com o ID do endereço ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com o ID do endereço ou mensagem de erro
      * 
      * @example
      * // POST /clientes/10/endereco
@@ -328,7 +328,7 @@ const clienteController = {
      * @function incluiTelefone
      * @param {Object} req Objeto da requisição HTTP (params: idCliente, body: numero_telefone)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com o ID do telefone ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com o ID do telefone ou mensagem de erro
      * 
      * @example
      * // POST /clientes/10/telefone
@@ -365,7 +365,7 @@ const clienteController = {
      * @function atualizaCliente
      * @param {Object} req Objeto da requisição HTTP (params: idCliente, body: nome, cpf, email)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com os dados atualizados ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com os dados atualizados ou mensagem de erro
      * 
      * @example
      * // PUT /clientes/5
@@ -405,9 +405,7 @@ const clienteController = {
 
             const resultado = await clienteModel.updateCliente(idCliente, nome, cpf, email);
 
-            return res.status(200).json({
-                message: "Cliente atualizado com sucesso!", resultado
-            });
+            return res.status(200).json({message: "Cliente atualizado com sucesso!", resultado});
 
         } catch (error) {
             console.error(error);
@@ -421,7 +419,7 @@ const clienteController = {
      * @function atualizaStatus
      * @param {Object} req Objeto da requisição HTTP (params: idCliente, body: status_cliente)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com a confirmação da atualização ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com a confirmação da atualização ou mensagem de erro
      * 
      * @example
      * // PATCH /clientes/5/status
@@ -444,10 +442,7 @@ const clienteController = {
 
             const resultado = await clienteModel.updateStatus(idCliente, status_cliente);
 
-            return res.status(200).json({
-                message: "Status atualizado com sucesso!",
-                resultado
-            });
+            return res.status(200).json({message: "Status atualizado com sucesso!",resultado});
 
         } catch (error) {
             console.error(error);
@@ -460,7 +455,7 @@ const clienteController = {
      * @function atualizaTelefone
      * @param {Object} req Objeto da requisição HTTP (params: idTelefone, body: numero_telefone)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com a confirmação da atualização ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com a confirmação da atualização ou mensagem de erro
      * 
      * @example
      * // PATCH /telefones/8
@@ -498,7 +493,7 @@ const clienteController = {
      * @function atualizaEndereco
      * @param {Object} req Objeto da requisição HTTP (params: idEndereco, body: cep, numero_casa, complemento)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso com os dados do endereço atualizado ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso com os dados do endereço atualizado ou mensagem de erro
      * 
      * @example
      * // PUT /enderecos/5
@@ -539,10 +534,7 @@ const clienteController = {
 
             await clienteModel.updateEndereco(idEndereco, enderecoAtualizado);
 
-            return res.status(200).json({
-                message: "Endereço atualizado com sucesso!",
-                endereco: enderecoAtualizado
-            });
+            return res.status(200).json({ message: "Endereço atualizado com sucesso!", endereco: enderecoAtualizado });
 
         } catch (error) {
             console.error("Erro no update de endereço:", error);
@@ -556,7 +548,7 @@ const clienteController = {
      * @function excluiCliente
      * @param {Object} req Objeto da requisição HTTP (params: idCliente)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
      * 
      * @example
      * // DELETE /clientes/5
@@ -599,7 +591,7 @@ const clienteController = {
      * @function excluiEndereco
      * @param {Object} req Objeto da requisição HTTP (params: idEndereco)
      * @param {Object} res Objeto da resposta HTTP
-     * @returns {JSON} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
+     * @returns {Promise<Object>} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
      * 
      * @example
      * // DELETE /enderecos/5
@@ -646,7 +638,7 @@ const clienteController = {
  * @function excluiTelefone
  * @param {Object} req Objeto da requisição HTTP (params: idTelefone)
  * @param {Object} res Objeto da resposta HTTP
- * @returns {JSON} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
+ * @returns {Promise<Object>} Mensagem de sucesso confirmando a exclusão ou mensagem de erro
  * 
  * @example
  * // DELETE /telefones/5
@@ -679,9 +671,7 @@ const clienteController = {
 
             await clienteModel.deleteTelefoneById(idTelefone);
 
-            return res.status(200).json({
-                message: "Telefone excluído com sucesso!"
-            });
+            return res.status(200).json({ message: "Telefone excluído com sucesso!" });
 
         } catch (error) {
             console.error("Erro ao excluir telefone:", error);
