@@ -63,8 +63,9 @@ const pedidoModel = {
         return rowsPedido;
     },
     /**
-     * Cadastra 
-     * 
+     * Cadastra um pedido novo no banco de dados
+     * @async
+     * @function insertPedido
      * @param {number} pDistancia Recebe o valor da distância entre a empresa e o cliente
      * @param {number} pPesoCarga Recebe o valor do peso da entrega em kg
      * @param {number} pValorKM Recebe o valor por KM da entrega
@@ -105,13 +106,15 @@ const pedidoModel = {
     },
     /**
      * Função para atualizar informações do pedido
+     * @async
+     * @function updatePedido
      * @param {number} pIdPedido Recebe o valor único do pedido
      * @param {number} pDistancia Recebe o valor da distância entre a empresa e o cliente
      * @param {number} pPesoCarga Recebe o valor do peso da entrega em kg
      * @param {number} pValorKM Recebe o valor por KM da entrega
      * @param {number} pValorKG Recebe o valor por KG da entrega
      * @param {number} pIdTipoEntrega Recebe o valor único do tipo de entrega
-     * @returns 
+     * @returns {Promise<Object>}
      * @example
      * const resultado = await pedidoModel.updatePedido(idPedido, novaDistancia, novoPeso, novoValorKm, novoValorKg, novoTipoEntrega);
 	 *	"resultado": {
@@ -142,10 +145,13 @@ const pedidoModel = {
         }
     },
     /**
+     * Função para atualizar o status de um pedido
      * 
+     * @async
+     * @function updateStatusPedido
      * @param {number} pIdStatusEntrega  Recebe o valor único do status de entrega
      * @param {number} pIdPedido  Recebe o valor único do pedido
-     * @returns 
+     * @returns {Promise<Object>}
      * @example
      * const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
  	 *	"resultado": {
@@ -176,9 +182,25 @@ const pedidoModel = {
         }
     },
     /**
+     * Função para deletar um pedido pelo ID
+     * @async
+     * @function deletePedido
+     * @param {number} pIdPedido Recebe o valor único do pedido a ser removido
+     * @returns {Promise<Object>} Retorna o resultado da exclusão contendo informações da query
+     * @example
+     * const resultado = await pedidoModel.deletePedido(10);
      * 
-     * @param {*} pIdPedido 
-     * @returns 
+     * // resposta:
+     * {
+     *   "rowsPedido": {
+     *      "fieldCount": 0,
+     *      "affectedRows": 1,
+     *      "insertId": 0,
+     *      "info": "",
+     *      "serverStatus": 2,
+     *      "warningStatus": 0
+     *   }
+     * }
      */
     deletePedido: async (pIdPedido) => {
         const sqlPedido = 'DELETE FROM pedidos WHERE id_pedido = ?;';
