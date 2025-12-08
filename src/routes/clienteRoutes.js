@@ -14,4 +14,10 @@ clienteRoutes.delete('/clientes/:idCliente', clienteController.excluiCliente);
 clienteRoutes.delete('/enderecos/:idEndereco', clienteController.excluiEndereco);
 clienteRoutes.delete('/clientes/telefones/:idTelefone', clienteController.excluiTelefone);
 clienteRoutes.get('/clientes/:idCliente', clienteController.selecionarClientePorId);
+clienteRoutes.get('/clientes/cpf/:cpf', clienteController.selecionaClientePorCpf);
+clienteRoutes.get('/clientes/email/:email', clienteController.selectByEmail);
+clienteRoutes.get('/telefones/:idTelefone', clienteController.selectTelefoneById);
+
+
+
 module.exports = { clienteRoutes };
