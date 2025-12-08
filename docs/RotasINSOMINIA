@@ -1,0 +1,326 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: S1_R7-AT2_PBE1
+meta:
+  id: wrk_37ed6f16b6ee40fbbeea5d062f982817
+  created: 1764252098047
+  modified: 1764252098047
+  description: ""
+collection:
+  - url: http://localhost:8000/pedidos/1/1/1
+    name: INSERT PEDIDO
+    meta:
+      id: req_ebd960a9ce8f4be08517c368f5eabc5d
+      created: 1764252104977
+      modified: 1764937710034
+      isPrivate: false
+      description: ""
+      sortKey: -1764848976342
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"pesoCarga": 12.00,
+        	"valorKM": 29,
+        	"valorKG": 15
+        	}
+    parameters:
+      - name: idCliente
+        value: "1"
+        description: ""
+        disabled: true
+      - name: idTipoEntrega
+        value: "1"
+        description: ""
+        disabled: true
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.0.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/pedidos
+    name: SELECT PEDIDOS
+    meta:
+      id: req_aa08ba4f1357480a9c93937996546e47
+      created: 1764329812410
+      modified: 1764855704270
+      isPrivate: false
+      description: ""
+      sortKey: -1764848976442
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/pedidos/11
+    name: SELECT PEDIDO ID
+    meta:
+      id: req_92da8c25d7ed465e9d43ba95ca3fd23e
+      created: 1764338187158
+      modified: 1764937753160
+      isPrivate: false
+      description: ""
+      sortKey: -1764848976392
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/pedidos/13/endereco/1
+    name: UPDATE PARCIAL PEDIDO
+    meta:
+      id: req_61ed8272ae6d4b25930cc05ae44940c8
+      created: 1764680481214
+      modified: 1765198346593
+      isPrivate: false
+      description: ""
+      sortKey: -1764680481214
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"idTipoEntrega": 1,
+        	"pesoCarga": 2,
+        	"valorKM": 15,
+        	"valorKG": 9.99
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/pedidos/delete/11
+    name: DELETE PEDIDOS
+    meta:
+      id: req_0fe742a9f4434d3fbbe7abff2b053e66
+      created: 1764848976242
+      modified: 1765191798635
+      isPrivate: false
+      description: ""
+      sortKey: -1764505146712
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/pedidos/11/status/7
+    name: UPDATE STATUS PEDIDO
+    meta:
+      id: req_4c90f499a3264bd9862a7251c25870d0
+      created: 1764853734552
+      modified: 1764937736370
+      isPrivate: false
+      description: ""
+      sortKey: -1764505146812
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas/10
+    name: SELECT ENTREGA ID ENTREGA
+    meta:
+      id: req_ec53c7477fb84adab0f364608f95679c
+      created: 1765196823444
+      modified: 1765196910066
+      isPrivate: false
+      description: ""
+      sortKey: -1765196823444
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas
+    name: SELECT ENTREGAS
+    meta:
+      id: req_29222a781db642029df9b3a68c6eb9d1
+      created: 1765196870185
+      modified: 1765197098128
+      isPrivate: false
+      description: ""
+      sortKey: -1765022899943
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas
+    name: INSERT ENTREGA
+    meta:
+      id: req_97685eaaa8ab4f2aa88a4742d0d50b93
+      created: 1765196893696
+      modified: 1765197269704
+      isPrivate: false
+      description: ""
+      sortKey: -1764935938192.5
+    method: POST
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas/pedido/10
+    name: SELECT ENTREGA ID PEDIDO
+    meta:
+      id: req_3e673a8d286b47268d008620dddf903a
+      created: 1765196913476
+      modified: 1765197151452
+      isPrivate: false
+      description: ""
+      sortKey: -1765109861693.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas/10
+    name: UPDATE ENTREGA
+    meta:
+      id: req_c575d774885f4163ad54e90750793d3f
+      created: 1765197163368
+      modified: 1765197277175
+      isPrivate: false
+      description: ""
+      sortKey: -1764892457317.25
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/entregas/delete/8
+    name: DELETE ENTREGA
+    meta:
+      id: req_3b8a8ad6d3414074a33d7505192bae95
+      created: 1765197191980
+      modified: 1765197264800
+      isPrivate: false
+      description: ""
+      sortKey: -1764870716879.625
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_dc94cf95d1d60fe26605e192c2ad877923495e64
+    created: 1764252098060
+    modified: 1764252098060
+environments:
+  name: Base Environment
+  meta:
+    id: env_dc94cf95d1d60fe26605e192c2ad877923495e64
+    created: 1764252098054
+    modified: 1764252098054
+    isPrivate: false
