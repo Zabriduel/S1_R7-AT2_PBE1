@@ -192,7 +192,7 @@ const pedidoController = {
             const idPedido = Number(req.params.idPedido);
             const idStatusEntrega = Number(req.params.idStatusEntrega);
 
-            const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
+            await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
             res.status(201).json({ message: 'Status do pedido atualizado com sucesso.' });
         } catch (error) {
             console.error(error);
