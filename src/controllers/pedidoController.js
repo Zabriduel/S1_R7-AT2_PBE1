@@ -184,7 +184,7 @@ const pedidoController = {
             const idStatusEntrega = Number(req.params.idStatusEntrega);
 
             const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
-            res.status(201).json({ message: 'Status do pedido atualizado com sucesse.', data: resultado });
+            res.status(201).json({ message: 'Status do pedido atualizado com sucesso.', data: resultado });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message });
