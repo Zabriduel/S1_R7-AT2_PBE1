@@ -148,7 +148,7 @@ const pedidoController = {
             const idEndereco = Number(req.params.idEndereco);
             const { idTipoEntrega, pesoCarga, valorKM, valorKG } = req.body;
 
-            if (!idPedido || !idEndereco || (!idTipoEntrega || typeof idTipoEntrega != 'number') || (!pesoCarga || typeof pesoCarga != 'number') || (!valorKM || typeof valorKM != 'number') || (!valorKG || typeof valorKG != 'number') || typeof idPedido != 'number' || typeof idEndereco != 'number') {
+            if ((idPedido !== undefined && typeof idPedido !== 'number') || (idEndereco !== undefined && typeof idEndereco !== 'number') || (idTipoEntrega !== undefined && typeof idTipoEntrega !== 'number') || (pesoCarga !== undefined && typeof pesoCarga !== 'number') || (valorKM !== undefined && typeof valorKM !== 'number') || (valorKG !== undefined && typeof valorKG !== 'number')) {
                 return res.status(400).json({ message: 'Verifique os dados enviados e tente novamete' });
             }
 
