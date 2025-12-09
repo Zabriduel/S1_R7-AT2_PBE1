@@ -129,6 +129,18 @@ const pedidoController = {
      *   "valorKG": 1.4,
      *   "idTipoEntrega": 2
      * }
+     * 
+     * // resposta:
+     * 
+     *  "rowsPedido": {
+     *		"fieldCount": 0,
+     *		"affectedRows": 1,
+     *		"insertId": 0,
+     *		"info": "Rows matched: 1  Changed: 0  Warnings: 0",
+     *		"serverStatus": 3,
+     *		"warningStatus": 0,
+     *		"changedRows": 0
+     *	}
      */
     alterarPedido: async (req, res) => {
         try {
@@ -173,7 +185,7 @@ const pedidoController = {
  * @example
  * 
  * // resposta:
- * { "message": "Status do pedido atualizado com sucesso.", "data": {...} }
+ * { "message": "Status do pedido atualizado com sucesso."}
  */
     alterarStatusPedido: async (req, res) => {
         try {
@@ -181,7 +193,7 @@ const pedidoController = {
             const idStatusEntrega = Number(req.params.idStatusEntrega);
 
             const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
-            res.status(201).json({ message: 'Status do pedido atualizado com sucesso.', data: resultado });
+            res.status(201).json({ message: 'Status do pedido atualizado com sucesso.' });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Ocorreu um erro no servidor', errorMessage: error.message });
@@ -200,7 +212,7 @@ const pedidoController = {
  * // resposta:
  * {
  *   "message": "Registro deletado com sucesso.",
- *   "data": { "affectedRows": 1 }
+ *   "data": { "affectedRows": 1... }
  * }
  */
     deletarPedido: async (req, res) => {
