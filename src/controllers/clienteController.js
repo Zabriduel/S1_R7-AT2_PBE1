@@ -223,7 +223,7 @@ const clienteController = {
                 return res.status(400).json({ message: 'Preencha todos os dados obrigatórios!' });
             }
 
-            if (isNaN(Number(idade))) {
+            if (isNaN(Number(idade)) || idade < 18) {
                 return res.status(400).json({ message: "Idade inválida!" });
             }
 

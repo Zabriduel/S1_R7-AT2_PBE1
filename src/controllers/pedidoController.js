@@ -106,7 +106,6 @@ const pedidoController = {
             const distanciaKm = await funcoesUteis.calcularDistancia(idEndereco);
             const resultado = await pedidoModel.insertPedido(distanciaKm, pesoCarga, valorKM, valorKG, idCliente, idTipoEntrega);
 
-            console.log(resultado)
             res.status(201).json({ message: 'Registro incluído com sucesso.', data: resultado });
 
         } catch (error) {
@@ -149,8 +148,6 @@ const pedidoController = {
             }
 
             const novaDistancia = distanciaKm ?? pedidoAtual[0].distancia;
-            console.log(distanciaKm);
-
 
             const novoPeso = pesoCarga ?? pedidoAtual[0].peso_carga;
             const novoValorKm = valorKM ?? pedidoAtual[0].valor_km;

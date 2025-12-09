@@ -39,17 +39,16 @@ const funcoesUteis = {
         if (dadosCep.code == 'invalid') {
             throw new Error(dadosCep.message)
         };
-         if (dadosCep.code == 'not_found') {
+        if (dadosCep.code == 'not_found') {
             throw new Error(dadosCep.message);
         };
 
         const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=-22.81937,-47.27421&destinations=${dadosCep.lat},${dadosCep.lng}&key=${apiKey}`;
 
         try {
-            const response = await axios.get(url);
-
-            const data = response.data;
-
+            const resultado = await axios.get(url);
+            const data = resultado.data;
+            
             if (data.status !== 'OK') {
                 throw new Error('Erro na API do Google');
             }
