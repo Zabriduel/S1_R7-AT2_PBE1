@@ -1,16 +1,16 @@
 type: collection.insomnia.rest/5.0
 schema_version: "5.1"
-name: S1_R7-AT2_PBE1
+name: rapidoEseguro
 meta:
-  id: wrk_37ed6f16b6ee40fbbeea5d062f982817
-  created: 1764252098047
-  modified: 1764252098047
+  id: wrk_698ddc9d70b64379bfa2f7a4b56bb654
+  created: 1764252335717
+  modified: 1764252335717
   description: ""
 collection:
   - url: http://localhost:8000/pedidos/1/1/1
     name: INSERT PEDIDO
     meta:
-      id: req_ebd960a9ce8f4be08517c368f5eabc5d
+      id: req_136df91981de4f6896430df11f3ef375
       created: 1764252104977
       modified: 1764937710034
       isPrivate: false
@@ -50,7 +50,7 @@ collection:
   - url: http://localhost:8000/pedidos
     name: SELECT PEDIDOS
     meta:
-      id: req_aa08ba4f1357480a9c93937996546e47
+      id: req_c2fa8ac501ac42378e60c223cd6fbcd6
       created: 1764329812410
       modified: 1764855704270
       isPrivate: false
@@ -73,7 +73,7 @@ collection:
   - url: http://localhost:8000/pedidos/11
     name: SELECT PEDIDO ID
     meta:
-      id: req_92da8c25d7ed465e9d43ba95ca3fd23e
+      id: req_435286080081458b8618ac084fd91073
       created: 1764338187158
       modified: 1764937753160
       isPrivate: false
@@ -96,7 +96,7 @@ collection:
   - url: http://localhost:8000/pedidos/13/endereco/1
     name: UPDATE PARCIAL PEDIDO
     meta:
-      id: req_61ed8272ae6d4b25930cc05ae44940c8
+      id: req_38fe38fa03f74ffab33f93ad52843699
       created: 1764680481214
       modified: 1765198346593
       isPrivate: false
@@ -130,7 +130,7 @@ collection:
   - url: http://localhost:8000/pedidos/delete/11
     name: DELETE PEDIDOS
     meta:
-      id: req_0fe742a9f4434d3fbbe7abff2b053e66
+      id: req_3a41260755f34c598a9bd91146d70bdc
       created: 1764848976242
       modified: 1765191798635
       isPrivate: false
@@ -153,7 +153,7 @@ collection:
   - url: http://localhost:8000/pedidos/11/status/7
     name: UPDATE STATUS PEDIDO
     meta:
-      id: req_4c90f499a3264bd9862a7251c25870d0
+      id: req_5ae19ddabc50442baac3eb8d22ab9148
       created: 1764853734552
       modified: 1764937736370
       isPrivate: false
@@ -176,7 +176,7 @@ collection:
   - url: http://localhost:8000/entregas/10
     name: SELECT ENTREGA ID ENTREGA
     meta:
-      id: req_ec53c7477fb84adab0f364608f95679c
+      id: req_ab9946ea19ae4ce79a2674d9e7022bfb
       created: 1765196823444
       modified: 1765196910066
       isPrivate: false
@@ -199,7 +199,7 @@ collection:
   - url: http://localhost:8000/entregas
     name: SELECT ENTREGAS
     meta:
-      id: req_29222a781db642029df9b3a68c6eb9d1
+      id: req_50077b97a86847859bf189487e1996ed
       created: 1765196870185
       modified: 1765197098128
       isPrivate: false
@@ -222,7 +222,7 @@ collection:
   - url: http://localhost:8000/entregas
     name: INSERT ENTREGA
     meta:
-      id: req_97685eaaa8ab4f2aa88a4742d0d50b93
+      id: req_f611110ed03649ff9643708e268aeca1
       created: 1765196893696
       modified: 1765197269704
       isPrivate: false
@@ -245,7 +245,7 @@ collection:
   - url: http://localhost:8000/entregas/pedido/10
     name: SELECT ENTREGA ID PEDIDO
     meta:
-      id: req_3e673a8d286b47268d008620dddf903a
+      id: req_89b86adbe7b443efa1e6cc07dda2f337
       created: 1765196913476
       modified: 1765197151452
       isPrivate: false
@@ -268,7 +268,7 @@ collection:
   - url: http://localhost:8000/entregas/10
     name: UPDATE ENTREGA
     meta:
-      id: req_c575d774885f4163ad54e90750793d3f
+      id: req_9796cfd42e1542ad91f48f761f212364
       created: 1765197163368
       modified: 1765197277175
       isPrivate: false
@@ -291,7 +291,7 @@ collection:
   - url: http://localhost:8000/entregas/delete/8
     name: DELETE ENTREGA
     meta:
-      id: req_3b8a8ad6d3414074a33d7505192bae95
+      id: req_4842e9b43b7b4ef99deae03c15fd0a43
       created: 1765197191980
       modified: 1765197264800
       isPrivate: false
@@ -311,16 +311,456 @@ collection:
         send: true
         store: true
       rebuildPath: true
+  - name: Clientes
+    meta:
+      id: fld_64c1be367d40435c9f7b251692474137
+      created: 1764327088281
+      modified: 1764327088281
+      sortKey: -1764327088281
+      description: ""
+    children:
+      - url: localhost:8000/clientes
+        name: INSERT
+        meta:
+          id: req_e1693441eb1e4734853955e5badee39b
+          created: 1764252343160
+          modified: 1764932649157
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095085
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "nome": "Fernando Lima",
+                "cpf": "43198065277",
+                "email": "fernando.lima@outlook.com",
+                "numero_telefone": "41974748899",
+                "cep": "80240340",
+                "numero_casa": "300",
+                "complemento": "Sala 10",
+                "data_nasc": "1990-12-01",
+                "idade": 35,
+                "status_cliente": "ativo"
+              }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes
+        name: SELECT ALL
+        meta:
+          id: req_5d1748c7d3fc47f99220ac15e8eaa2b3
+          created: 1764327018991
+          modified: 1764327096348
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095185
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/3
+        name: UPDATE Cliente
+        meta:
+          id: req_82638a95f3e1461f84dd343b0e9d3c40
+          created: 1764329555978
+          modified: 1765201839483
+          isPrivate: false
+          description: ""
+          sortKey: -1764327094985
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "nome": "João Silva",
+              "email": "joao@gmail.com",
+              "cpf": "12345678901",
+              "status_cliente": "ativo"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/telefones/1
+        name: UPDATE Telefone
+        meta:
+          id: req_1ef1dc5f596f42c4986f2ae7d651707d
+          created: 1764674797835
+          modified: 1765202242651
+          isPrivate: false
+          description: ""
+          sortKey: -1763682409772
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "numero_telefone": "12323212345"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/enderecos/4
+        name: UPDATE Endereço
+        meta:
+          id: req_a4eac8ef2e0241c9a169b414ec2c969a
+          created: 1764678506186
+          modified: 1764933829428
+          isPrivate: false
+          description: ""
+          sortKey: -1763360067165.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "cep": "68908082",
+              "numero_casa": "990",
+              "complemento": "Casa"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/10
+        name: DELETE Cliente
+        meta:
+          id: req_8f991d0e068e476cbea302a8c1531646
+          created: 1764847044228
+          modified: 1765202603088
+          isPrivate: false
+          description: ""
+          sortKey: -1763198895862.25
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/3/enderecos
+        name: INSERT Endereço
+        meta:
+          id: req_dec157c933d041a584f3ac65fed7e2f1
+          created: 1764849170256
+          modified: 1765197972072
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095035
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "cep": "41307550",
+              "numero_casa": "200",
+              "complemento": "Casa dos fundos"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/clientes/1/telefones
+        name: INSERT Telefone
+        meta:
+          id: req_ecfa28fbc1e64b31aac37649e15815f5
+          created: 1764849191916
+          modified: 1765202288002
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095010
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "numero_telefone": "11122334455"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/enderecos/5
+        name: DELETE Endereço
+        meta:
+          id: req_21fea3d560924dc38a8ff73be938d74d
+          created: 1764850862192
+          modified: 1764936815362
+          isPrivate: false
+          description: ""
+          sortKey: -1763118310210.625
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/telefones/1
+        name: DELETE Telefone
+        meta:
+          id: req_85f501028cbe4eebb4f85a9139e6fcd4
+          created: 1764850876241
+          modified: 1764934544919
+          isPrivate: false
+          description: ""
+          sortKey: -1763078017384.8125
+        method: DELETE
+        body:
+          mimeType: application/json
+          text: ""
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/3
+        name: SELECT Cliente
+        meta:
+          id: req_b338068fcf1747da9cb3279dc86efa1c
+          created: 1764938325601
+          modified: 1765201850900
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095135
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/cpf/43198065277
+        name: SELECT ClientePorCPF
+        meta:
+          id: req_b857a6d46af5423ea013d788d8237f1c
+          created: 1765193950193
+          modified: 1765201958593
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095110
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/clientes/email/fernando.lima@outlook.com
+        name: SELECT ClientePorEmail
+        meta:
+          id: req_64a7361ac3714991b8e6c11d3db227e1
+          created: 1765194709331
+          modified: 1765201981147
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095097.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/telefones/7
+        name: SELECT Telefone
+        meta:
+          id: req_4e3489ca62c14aa6af7b5f14b8358d26
+          created: 1765196234654
+          modified: 1765197212580
+          isPrivate: false
+          description: ""
+          sortKey: -1764327095091.25
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/status/1
+        name: UPDATE Status
+        meta:
+          id: req_b2b9138e58de4ff68dc3a8e3ed6347fd
+          created: 1765198685625
+          modified: 1765201792894
+          isPrivate: false
+          description: ""
+          sortKey: -1763279481513.875
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "status_cliente": "ativo"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
-    id: jar_dc94cf95d1d60fe26605e192c2ad877923495e64
-    created: 1764252098060
-    modified: 1764252098060
+    id: jar_2ab44e46bafb282f2e0f22bcff6a3c8b560211e8
+    created: 1764252335727
+    modified: 1764252335727
 environments:
   name: Base Environment
   meta:
-    id: env_dc94cf95d1d60fe26605e192c2ad877923495e64
-    created: 1764252098054
-    modified: 1764252098054
+    id: env_2ab44e46bafb282f2e0f22bcff6a3c8b560211e8
+    created: 1764252335722
+    modified: 1764252335722
     isPrivate: false
