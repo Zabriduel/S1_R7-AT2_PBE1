@@ -117,16 +117,16 @@ const pedidoModel = {
      * @returns {Promise<Object>}
      * @example
      * const resultado = await pedidoModel.updatePedido(idPedido, novaDistancia, novoPeso, novoValorKm, novoValorKg, novoTipoEntrega);
-	 *	"resultado": {
-	 *		"fieldCount": 0,
-	 *		"affectedRows": 1,
-	 *		"insertId": 0,
-	 *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
-	 *		"serverStatus": 3,
-	 *		"warningStatus": 0,
-	 *		"changedRows": 1
-	 *	}
-	 *
+     *	"resultado": {
+     *		"fieldCount": 0,
+     *		"affectedRows": 1,
+     *		"insertId": 0,
+     *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
+     *		"serverStatus": 3,
+     *		"warningStatus": 0,
+     *		"changedRows": 1
+     *	}
+     *
      */
     updatePedido: async (pIdPedido, pDistancia, pPesoCarga, pValorKM, pValorKG, pIdTipoEntrega) => {
         const connection = await pool.getConnection();
@@ -154,15 +154,15 @@ const pedidoModel = {
      * @returns {Promise<Object>}
      * @example
      * const resultado = await pedidoModel.updateStatusPedido(idStatusEntrega, idPedido);
- 	 *	"resultado": {
-	 *		"fieldCount": 0,
-	 *		"affectedRows": 1,
-	 *		"insertId": 0,
-	 *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
-	 *		"serverStatus": 3,
-	 *		"warningStatus": 0,
-	 *		"changedRows": 1
-	 *	}
+       *	"resultado": {
+     *		"fieldCount": 0,
+     *		"affectedRows": 1,
+     *		"insertId": 0,
+     *		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
+     *		"serverStatus": 3,
+     *		"warningStatus": 0,
+     *		"changedRows": 1
+     *	}
      */
     updateStatusPedido: async (pIdStatusEntrega, pIdPedido) => {
         const connection = await pool.getConnection();
@@ -192,13 +192,14 @@ const pedidoModel = {
      * 
      * // resposta:
      * {
-     *   "rowsPedido": {
-     *      "fieldCount": 0,
-     *      "affectedRows": 1,
-     *      "insertId": 0,
-     *      "info": "",
-     *      "serverStatus": 2,
-     *      "warningStatus": 0
+     *  "rowsPedido": {
+            "fieldCount": 0,
+            "affectedRows": 1,
+            "insertId": 0,
+            "info": "",
+            "serverStatus": 2,
+            "warningStatus": 0,
+            "changedRows": 0
      *   }
      * }
      */
